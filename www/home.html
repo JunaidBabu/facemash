@@ -1,4 +1,7 @@
 <head>
+    <script type="text/javascript">
+    var js={};
+    </script>
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <style type="text/css">
@@ -25,30 +28,34 @@
         </h3>
     </div>
     <div data-role="content">
+    <div id="home">
         <div style="width: 288px; height: 130px; position: relative; background-color: #fbfbfb; border: 1px solid #b8b8b8;">
-            <img id="im1" >
+            <img id="im1" onclick="">
         </div>
         <a data-role="button" href="#page1" onclick="start();">
-            Button
+            Refresh
         </a>
         <div style="width: 288px; height: 130px; position: relative; background-color: #fbfbfb; border: 1px solid #b8b8b8;">
-            <img id="im2">
+            <img id="im2" onclick="">
         </div>
+    </div>
+    <div id="rank">Rank here</div>
+    <div id="upload">Currently Unavailable, Sorry for the trouble</div>
         <div data-role="navbar" data-iconpos="left">
             <ul>
                 <li>
-                    <a href="#page1" data-transition="fade" data-theme="" data-icon="">
-                        My Status
+                    <a href="#page1" id="torank" data-transition="fade" data-theme="" data-icon="">
+                        Top Ranks
                     </a>
                 </li>
                 <li>
-                    <a href="#page1" data-transition="fade" data-theme="" data-icon="">
+                    <a href="#page1" id="toupload" data-transition="fade" data-theme="" data-icon="">
                         Upload
                     </a>
                 </li>
                 <li>
-                    <a href="#page1" data-transition="fade" data-theme="" data-icon="">
-                        Invite
+                    <a href="#page1" id="tohome" data-transition="fade" data-theme="" data-icon="">
+                        Home
                     </a>
                 </li>
             </ul>
@@ -56,15 +63,16 @@
     </div>
 </div>
 <script type="text/javascript">
+var js;
 function start(){
+$("#tohome").click();
 load("loading...    ");
 $.ajax(
         {
             url: 'http://10.93.1.133/mobops/fm/js.php?format=json',
             success: function (resp)
             {
-                var js=JSON.parse(resp)
-                console.log(js);
+                js=JSON.parse(resp);
                 $("#im1").attr('src', js.im1);
                 $("#im2").attr('src', js.im2);
                 stop();
@@ -73,7 +81,66 @@ $.ajax(
         });
 
 }
+$("#torank").click(function(){
+        home.style.display = "none";
+        rank.style.display = "block";
+        upload.style.display = "none";
+        load("Loading...    ");
+        $.ajax(
+        {
+            url: 'http://10.93.1.133/mobops/fm/rank.php',
+            success: function (resp)
+            {
+                js=JSON.parse(resp);
+                stop();
+                rank.innerHTML = "";
+                for (var i = 0; i < js.length; i++)
+                {
+                    r=i+1;
+                rank.innerHTML += '<b>Rank: '+r+'</b><img src='+js[i].image+'  style="width: 50px; height:50px;"><b>'+js[i].name+'</b> Score:<b>'+js[i].score+'</b> Wins: <b>'+js[i].wins+'</b> Loses: <b>'+js[i].losses+'</b></br>';
+            }
 
+            },
+            cache: false
+        });
+});
+$("#tohome").click(function(){
+        home.style.display = "block";
+        rank.style.display = "none";
+        upload.style.display = "none";
+});
+$("#toupload").click(function(){
+        home.style.display = "none";
+        rank.style.display = "none";
+        upload.style.display = "block";
+});
+$("#im1").click(function(){
+load("Processing...    ");
+$.ajax(
+        {
+            url: 'http://10.93.1.133/mobops/fm/rate.php?winner='+js.s1+'&loser='+js.s2+'',
+            success: function (resp)
+            {
+                stop();
+                start();
+            },
+            cache: false
+        });
+});
+
+$("#im2").click(function(){
+load("Processing...    ");
+$.ajax(
+        {
+            url: 'http://10.93.1.133/mobops/fm/rate.php?winner='+js.s2+'&loser='+js.s1+'',
+            success: function (resp)
+            {
+                stop();
+                start();
+            },
+            cache: false
+        });
+});
 function load(msg)
 {
     $.mobile.loading('show',
