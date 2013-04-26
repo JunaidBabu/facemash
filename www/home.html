@@ -3,7 +3,7 @@
         <meta name="format-detection" content="telephone=no" />
         <title>Home</title>
     </head>
-    <body>
+    <body onload="start();">
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
         <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
@@ -16,13 +16,13 @@
     </div>
     <div data-role="content">
         <div style="width: 288px; height: 100px; position: relative; background-color: #fbfbfb; border: 1px solid #b8b8b8;">
-            <img src="http://codiqa.com/static/images/v2/image.png" alt="image" style="position: absolute; top: 50%; left: 50%; margin-left: -16px; margin-top: -18px">
+            <img id="im1" width="100%">
         </div>
-        <a data-role="button" href="#page1">
+        <a data-role="button" href="#page1" onclick="start();">
             Refresh
         </a>
         <div style="width: 288px; height: 100px; position: relative; background-color: #fbfbfb; border: 1px solid #b8b8b8;">
-            <img src="http://codiqa.com/static/images/v2/image.png" alt="image" style="position: absolute; top: 50%; left: 50%; margin-left: -16px; margin-top: -18px">
+            <img id="im2" alt="image" width="100%">
         </div>
         <div data-role="navbar" data-iconpos="left">
             <ul>
@@ -45,3 +45,38 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+function start(){
+load("loading...    ");
+$.ajax(
+        {
+            url: 'http://10.93.1.133/mobops/fm/js.php?format=json',
+            success: function (resp)
+            {
+                var js=JSON.parse(resp)
+                $("#im1").attr('src', js.im1);
+                $("#im2").attr('src', js.im2);
+                stop();
+            },
+            cache: false
+        });
+
+}
+
+function load(msg)
+{
+    $.mobile.loading('show',
+    {
+        text: msg,
+        textVisible: true,
+        theme: 'b',
+        html: ""
+    })
+}
+
+function stop()
+{
+    $.mobile.loading('hide',
+    {});
+}
+</script>
