@@ -69,7 +69,7 @@ $("#tohome").click();
 load("loading...    ");
 $.ajax(
         {
-            url: 'http://10.93.1.133/mobops/fm/js.php?format=json',
+            url: 'http://203.199.213.247/mobops/fm/js.php?format=json',
             success: function (resp)
             {
                 js=JSON.parse(resp);
@@ -88,7 +88,7 @@ $("#torank").click(function(){
         load("Loading...    ");
         $.ajax(
         {
-            url: 'http://10.93.1.133/mobops/fm/rank.php',
+            url: 'http://203.199.213.247/mobops/fm/rank.php',
             success: function (resp)
             {
                 js=JSON.parse(resp);
@@ -118,7 +118,7 @@ $("#im1").click(function(){
 load("Processing...    ");
 $.ajax(
         {
-            url: 'http://10.93.1.133/mobops/fm/rate.php?winner='+js.s1+'&loser='+js.s2+'',
+            url: 'http://203.199.213.247/mobops/fm/rate.php?winner='+js.s1+'&loser='+js.s2+'',
             success: function (resp)
             {
                 stop();
@@ -132,7 +132,7 @@ $("#im2").click(function(){
 load("Processing...    ");
 $.ajax(
         {
-            url: 'http://10.93.1.133/mobops/fm/rate.php?winner='+js.s2+'&loser='+js.s1+'',
+            url: 'http://203.199.213.247/mobops/fm/rate.php?winner='+js.s2+'&loser='+js.s1+'',
             success: function (resp)
             {
                 stop();
